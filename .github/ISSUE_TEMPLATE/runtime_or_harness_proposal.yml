@@ -1,0 +1,51 @@
+name: Runtime Or Harness Proposal
+description: Propose a runtime capability, harness module, or unified-interface improvement.
+title: "[Proposal] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for runtime capabilities, reusable harness patterns, and public interface proposals.
+        Benchmark-platform features should be proposed in the separate experiment-platform repository instead.
+  - type: dropdown
+    id: proposal_type
+    attributes:
+      label: Proposal type
+      options:
+        - Runtime capability
+        - Natural-language harness module
+        - Unified agent interface
+        - Packaging or developer experience
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this proposal solve?
+      placeholder: Today it is difficult to ...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the proposed behavior, interface, or module.
+      placeholder: We should add ...
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: References or evidence
+      description: Link papers, repos, trajectories, or examples that motivate the proposal.
+      placeholder: Related paper, existing agent behavior, design references, ...
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks or tradeoffs
+      description: What gets more complex if we adopt this?
+      placeholder: This may increase ...

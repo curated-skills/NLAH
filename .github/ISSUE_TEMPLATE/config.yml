@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Paper
+    url: https://arxiv.org/abs/2603.25723
+    about: Read the paper for the high-level framing behind NLAH.

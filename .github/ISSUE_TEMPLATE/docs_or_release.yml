@@ -1,0 +1,37 @@
+name: Docs Or Release Improvement
+description: Suggest improvements to documentation, packaging, install flow, or release automation.
+title: "[Docs/Release] "
+labels:
+  - documentation
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - README
+        - CONTRIBUTING
+        - Packaging metadata
+        - Install flow
+        - CI
+        - Release automation
+        - PyPI publishing
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is unclear or broken?
+      placeholder: The current docs or release flow ...
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_fix
+    attributes:
+      label: Suggested fix
+      placeholder: We should change ...
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Add screenshots, commands, or error messages if relevant.

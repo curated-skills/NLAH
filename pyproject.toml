@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nlah"
+version = "0.1.0"
+description = "Public runtime scaffold for Natural-Language Agent Harnesses"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+keywords = ["agent harness", "agents", "llm", "nlah", "runtime"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2.2",
+  "twine>=6.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/curated-skills/NLAH"
+Repository = "https://github.com/curated-skills/NLAH"
+Documentation = "https://github.com/curated-skills/NLAH#readme"
+Issues = "https://github.com/curated-skills/NLAH/issues"
+Paper = "https://arxiv.org/abs/2603.25723"
+
+[project.scripts]
+nlah = "nlah.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

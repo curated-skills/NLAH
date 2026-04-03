@@ -1,0 +1,60 @@
+name: Bug Report
+description: Report a bug in the runtime, CLI, install flow, or harness behavior.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please keep the report concrete and reproducible.
+        If the issue is behavior-related, short trajectory or artifact evidence is more useful than generic descriptions.
+  - type: input
+    id: area
+    attributes:
+      label: Area
+      description: Which part of NLAH is affected?
+      placeholder: runtime / harness / CLI / packaging / release / docs
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the bug and the observed behavior.
+      placeholder: The command or harness step did X, but I expected Y.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction
+      description: Provide the shortest reliable reproduction you have.
+      placeholder: |
+        1. Install with ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, trajectory, or artifacts
+      description: Paste relevant command output, traces, or artifact summaries.
+      placeholder: Add stack traces, CLI output, or a concise trajectory summary here.
+  - type: input
+    id: python_version
+    attributes:
+      label: Python version
+      placeholder: "3.14.0"
+  - type: input
+    id: install_method
+    attributes:
+      label: Install method
+      placeholder: uv tool install / editable install / PyPI
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment details
+      description: Include OS, shell, and anything else relevant.
+      placeholder: Ubuntu 24.04, zsh, uv 0.x, ...
