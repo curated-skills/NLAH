@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import argparse
 
-from nlah import __version__
+__version__ = "0.1.0"
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="nlah",
-        description="Natural-Language Agent Harnesses public runtime scaffold.",
+        prog="linguaclaw",
+        description="A Claude-Code-style agent harness implemented mostly in natural language.",
     )
     parser.add_argument(
         "--version",
@@ -21,7 +21,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> None:
     parser = build_parser()
     parser.parse_args()
-    print("NLAH public runtime scaffold. Runtime modules and harness components will be released incrementally.")
+    print("LinguaClaw public runtime scaffold. The thin appserver runtime and harness modules will be released incrementally.")
 
 
 if __name__ == "__main__":

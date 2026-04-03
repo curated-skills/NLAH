@@ -3,13 +3,13 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nlah"
+name = "linguaclaw"
 version = "0.1.0"
-description = "Public runtime scaffold for Natural-Language Agent Harnesses"
+description = "A Claude-Code-style agent harness implemented mostly in natural language"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-keywords = ["agent harness", "agents", "llm", "nlah", "runtime"]
+keywords = ["agent harness", "agents", "llm", "nlah", "linguaclaw", "runtime"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
@@ -38,10 +38,12 @@ Issues = "https://github.com/curated-skills/NLAH/issues"
 Paper = "https://arxiv.org/abs/2603.25723"
 
 [project.scripts]
-nlah = "nlah.cli:main"
+linguaclaw = "linguaclaw:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+py-modules = ["linguaclaw"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["appserver", "appserver.*", "rich_cli", "rich_cli.*"]

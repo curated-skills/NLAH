@@ -16,7 +16,6 @@ body:
       options:
         - Runtime capability
         - Natural-language harness module
-        - Unified agent interface
         - Packaging or developer experience
         - Documentation
     validations:

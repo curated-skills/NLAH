@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for contributing to NLAH.
+Thanks for contributing to LinguaClaw.
 This project sits at the intersection of runtime engineering, natural-language harness design, and benchmark-oriented agent evaluation, so we optimize for changes that are explicit, scoped, and easy to review.
 
 ## What We Welcome
@@ -27,7 +27,7 @@ uv pip install -e .[dev]
 Useful local checks:
 
 ```bash
-nlah --version
+linguaclaw --version
 python -m build --outdir dist
 python -m twine check dist/*
 ```
