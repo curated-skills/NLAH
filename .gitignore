@@ -21,6 +21,7 @@ htmlcov/
 
 # Local
 .env*
+!.env.template
 .cache/
 .tmp/
 .clawhub/

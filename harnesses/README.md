@@ -5,9 +5,12 @@ This directory contains the natural-language artifacts that shape runtime behavi
 ## Layout
 
 - `modules/`
-  - reusable full-load harness modules that are selected explicitly with `--module`.
+  - reusable full-load harness modules that can be selected explicitly with `--harness`.
 - `artifacts/`
   - larger harness bundles and imported reference agents preserved as artifact-style behaviors.
+
+In practice, `--harness` usually points at one of the artifact directories here.
+If you want a lighter composition, it can also point at one or more entries under `modules/`.
 
 ## Current State
 

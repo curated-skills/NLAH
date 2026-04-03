@@ -1,0 +1,6 @@
+include .env.template
+recursive-include docs *.md
+recursive-include harnesses *.md
+recursive-include runtime-policy *.md
+recursive-include tool-skills *.md
+include setup.py

@@ -95,18 +95,17 @@ The `bash` tool contract is intentionally narrow:
 No separate `read`, `write`, `edit`, or `search` tools should be exposed in v0.
 The model should perform those tasks through `bash`.
 
-### 5. Use file-backed state
+### 5. Keep run state minimal
 
-State should be durable, inspectable, and path-addressable.
-If a plan, verdict, artifact index, or handoff matters, it should live in files rather than in the appserver's process memory alone.
+The runtime should persist only what it actually needs:
 
-This enables:
+- selected run parameters,
+- the message history,
+- the event stream,
+- and the final response.
 
-- long-horizon runs,
-- restartability,
-- trajectory inspection,
-- future sandboxing,
-- and delegation via child runs.
+It should not create a mini filesystem protocol of copied prompts, duplicated histories, tool-call ledgers, or synthetic artifact manifests.
+If a harness wants extra durable files, that should be a harness choice made through `bash`, not a built-in runtime obligation.
 
 ### 6. Separate the machine interface from the human interface
 
@@ -165,19 +164,20 @@ The public interface should center on one command of this shape:
 linguaclaw run \
   [--runtime-policy runtime-policy/SKILL.md] \
   [--system-prompt runtime-policy/SKILL.md] \
-  --module file-backed-state \
-  --module verifier \
-  --task-file task.md \
-  --workspace /workspace \
-  --model anthropic/claude-sonnet-4-5@reasoning-effort
+  --harness trae-agent \
+  [--task-file task.md | --prompt "Inspect the repository"] \
+  [--workspace /workspace] \
+  --model gpt-5.4-mini@reasoning-effort
 ```
 
-The important design choice is that `--module` means full prompt inclusion.
-Modules are treated as always-on prompt components for the run.
+The important design choice is that `--harness` is the public composition knob.
+In the common case it selects a complete harness from `harnesses/artifacts/`.
+It can also point directly at reusable modules from `harnesses/modules/` when you want to assemble a lighter stack yourself.
+If `--workspace` is omitted, LinguaClaw uses the current directory.
 
 That differs from a `skill`:
 
-- a `module` is pinned into context,
+- a selected `harness` or module is pinned into context,
 - a `skill` is discovered progressively and should load metadata first.
 
 This distinction matters because LinguaClaw wants both:
@@ -190,16 +190,11 @@ This distinction matters because LinguaClaw wants both:
 The runtime should assemble prompts in a stable order:
 
 1. runtime policy,
-2. tool contract,
-3. state contract,
-4. selected modules,
-5. task file,
-6. environment facts.
+2. selected harnesses,
+3. environment facts.
 
-This layering keeps behavior legible.
-The runtime policy defines the rules.
-Modules add patterns.
-The task file supplies the concrete objective.
+The task input, whether loaded from `--task-file` or passed through `--prompt`, should become the first user message, not part of the system prompt.
+That keeps the persisted message history sufficient to understand or resume a run.
 
 ## Appserver Design
 
@@ -209,15 +204,15 @@ Its job is to turn a run request into an evented loop.
 The planned loop is:
 
 1. resolve configuration,
-2. load runtime policy and modules,
+2. load runtime policy and selected harnesses,
 3. build the prompt stack,
-4. call LiteLLM,
-5. parse the next action,
-6. execute `bash`,
+4. call LiteLLM with native tool calling,
+5. dispatch `bash` when the model emits a tool call,
+6. append the tool result to the message history,
 7. append a JSONL event,
-8. update state files,
+8. update minimal run-state files,
 9. lazily compress context when needed,
-10. repeat until the model returns a terminal answer.
+10. repeat until the model returns a terminal answer without tool calls.
 
 Representative event families:
 
@@ -240,9 +235,10 @@ The runtime should support automatic lazy compression.
 The intended behavior is:
 
 - keep the natural full trajectory while it fits,
-- when the context budget approaches a threshold, compress old turns,
-- write the compression result to a durable state file,
-- continue from that summary plus recent turns.
+- when the prompt reaches about 80% of the model context window, trigger compression,
+- ask the model to summarize the prior conversation with strong emphasis on preserving the user's intent,
+- inject that summary back into the message history,
+- continue from that compressed summary.
 
 Compression is a runtime responsibility because it depends on context budget.
 The policy for what to preserve, however, should be shaped by the runtime policy and harness modules rather than by opaque hard-coded heuristics.

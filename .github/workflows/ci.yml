@@ -38,8 +38,9 @@ jobs:
       - name: Run smoke checks
         run: |
           source .venv/bin/activate
-          nlah --version
-          python -m nlah
+          linguaclaw --version
+          python -m linguaclaw
+          linguaclaw run --help
 
       - name: Build distribution
         run: |

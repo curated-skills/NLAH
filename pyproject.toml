@@ -22,7 +22,11 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = []
+dependencies = [
+  "litellm>=1.79.0",
+  "python-dotenv>=1.0.1",
+  "rich>=13.9.0",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -43,6 +47,7 @@ linguaclaw = "linguaclaw:main"
 [tool.setuptools]
 package-dir = {"" = "src"}
 py-modules = ["linguaclaw"]
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]

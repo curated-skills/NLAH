@@ -5,7 +5,7 @@
 [![Release](https://github.com/curated-skills/NLAH/actions/workflows/release.yml/badge.svg)](https://github.com/curated-skills/NLAH/actions/workflows/release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> A Claude-Code-style agent harness implemented mostly in natural language: LiteLLM at the model boundary, one bash tool at the action boundary, and reusable harness modules everywhere else.
+> A Claude-Code-style agent harness implemented mostly in natural language: LiteLLM at the model boundary, one bash tool at the action boundary, and reusable harnesses everywhere else.
 
 LinguaClaw is the open-source implementation and continuation of the **Natural-Language Agent Harnesses (NLAH)** line of work.
 We are building it as a natural-language implementation of the Claude Code idea: a very thin runtime, a strong runtime policy, and most behavior expressed as reusable markdown modules instead of framework glue code.
@@ -38,23 +38,8 @@ In practice, we care about harnesses that can coordinate subagents, memory, comp
 
 ## Current Status
 
-This public repository is in the architecture-freeze and structure-bootstrap phase.
-The runtime code will stay intentionally small.
-We are first organizing the runtime policy, imported seed modules, public docs, and package layout, then implementing the minimal appserver loop on top of that structure.
-
-## Repository Layout
-
-- `src/linguaclaw.py`: the thin public entry module for the runtime CLI.
-- `src/appserver/`: the planned runtime core that will assemble prompts, call LiteLLM, execute tools, and emit a JSONL event stream.
-- `src/rich_cli/`: the planned human-facing Rich CLI that will render the appserver event stream.
-- `runtime-policy/SKILL.md`: the standing runtime policy and interpreter charter.
-- `harnesses/modules/`: reusable full-load harness modules.
-- `harnesses/artifacts/`: imported artifact-style harnesses and reference agent behaviors.
-- `tool-skills/`: peripheral tool-oriented skills that should be loaded progressively instead of being pinned into the main prompt by default.
-- `docs/architecture.md`: the architectural specification for the public runtime.
-- `docs/module-authoring.md`: module and skill authoring rules.
-- `docs/roadmap.md`: the staged roadmap for runtime, multimodality, CLI, sandboxing, and ecosystem support.
-- `.github/workflows/`: CI and release automation.
+The public runtime is intentionally small and already runnable.
+It assembles a prompt stack from the runtime policy plus selected harnesses, calls LiteLLM, dispatches one native `bash` tool, records the message history, and automatically compresses context once the prompt reaches roughly 80% of the model window.
 
 ## Getting Started
 
@@ -73,6 +58,34 @@ source .venv/bin/activate
 uv pip install -e .[dev]
 ```
 
+Copy the environment template and fill in the provider credentials you need:
+
+```bash
+cp .env.template .env
+```
+
+Then a minimal run looks like:
+
+```bash
+linguaclaw run \
+  --harness trae-agent \
+  --task-file task.md \
+  --model gpt-5.4-mini
+```
+
+Or pass the task inline:
+
+```bash
+linguaclaw run \
+  --harness trae-agent \
+  --prompt "Inspect the repository and explain the runtime entrypoint." \
+  --model gpt-5.4-mini
+```
+
+`--harness` usually points at a complete harness under `harnesses/artifacts/`.
+If you want a lighter custom stack, it can also point at reusable modules under `harnesses/modules/` or at a direct `SKILL.md` path.
+Passing it multiple times is how you compose those layers.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -87,7 +100,7 @@ Traditional unit tests are welcome when they fit, but behavior reports, demo art
 - Roadmap: [docs/roadmap.md](docs/roadmap.md)
 
 The short version is simple:
-this repository will ship a thin runtime built around `LiteLLM + one bash tool + file-backed state + reusable markdown harness modules`.
+this repository ships a thin runtime built around `LiteLLM + one bash tool + minimal run state + reusable markdown harnesses`.
 Benchmark orchestration and large-scale experiment plumbing will stay in a separate repository.
 
 ## Acknowledgements
